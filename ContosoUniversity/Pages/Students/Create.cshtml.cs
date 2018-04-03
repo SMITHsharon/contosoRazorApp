@@ -24,6 +24,8 @@ namespace ContosoUniversity.Pages.Students
             return Page();
         }
 
+
+        /*
         [BindProperty]
         public Student Student { get; set; }
 
@@ -34,10 +36,46 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
+            var emptyStudent = new Student();
+
+            if (await TryUpdateModelAsync<Student>(
+                emptyStudent,
+                "student", // Prefix for form value
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                _context.Students.Add(emptyStudent);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            /*
             _context.Students.Add(Student);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+            */
+
+        /*
+            return null;
         }
+        */
+
+        // alternative way to Create New Student, using StudentVM Model
+        [BindProperty]
+        public StudentVM StudentVM { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var entry = _context.Add(new Student());
+            entry.CurrentValues.SetValues(StudentVM);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Index");
+        }
+
     }
 }

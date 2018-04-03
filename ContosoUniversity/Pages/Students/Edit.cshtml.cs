@@ -30,7 +30,8 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            //Student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
+            Student = await _context.Students.FindAsync(id);
 
             if (Student == null)
             {
@@ -39,14 +40,16 @@ namespace ContosoUniversity.Pages.Students
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            /*
             _context.Attach(Student).State = EntityState.Modified;
+
 
             try
             {
@@ -65,6 +68,20 @@ namespace ContosoUniversity.Pages.Students
             }
 
             return RedirectToPage("./Index");
+            */
+
+            var studentToUpdate = await _context.Students.FindAsync(id);
+
+            if (await TryUpdateModelAsync<Student>(
+                studentToUpdate,
+                "student",
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
         }
 
         private bool StudentExists(int id)

@@ -25,11 +25,11 @@ namespace ContosoUniversity.Pages.Students
         }
 
 
-        /*
+        
         [BindProperty]
         public Student Student { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsyncWithStudentModel()
         {
             if (!ModelState.IsValid)
             {
@@ -55,10 +55,10 @@ namespace ContosoUniversity.Pages.Students
             return RedirectToPage("./Index");
             */
 
-        /*
+        
             return null;
         }
-        */
+        
 
         // alternative way to Create New Student, using StudentVM Model
         [BindProperty]

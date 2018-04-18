@@ -32,9 +32,11 @@ namespace ContosoUniversity.Pages.Instructors
         public InstructorIndexData Instructor { get; set; }
         public int InstructorID { get; set; }
         public int CourseID { get; private set; }
+        //public int StudentID { get; private set; }
 
         //public async Task OnGetAsync(int? id)
         public async Task OnGetAsync(int? id, int? courseID)
+        //public async Task OnGetAsync(int? id, int? courseID, int? studentID)
         {
             Instructor = new InstructorIndexData();
             Instructor.Instructors = await _context.Instructors

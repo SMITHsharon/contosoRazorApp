@@ -19,23 +19,23 @@
             <th>Office</th>
             <th>Courses</th>
             @*
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].FirstMidName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor[0].HireDate)
-            </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructor[0].LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructor[0].FirstMidName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructor[0].HireDate)
+                </th>
             *@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@*
-@foreach (var item in Model.Instructor) {
-*@
+        @*
+            @foreach (var item in Model.Instructor) {
+        *@
         @foreach (var item in Model.Instructor.Instructors)
         {
             string selectedRow = "";
@@ -60,10 +60,10 @@
                 }
             </td>
             <td>
-                @{ 
+                @{
                     foreach (var course in item.CourseAssignments)
                     {
-                        @course.Course.CourseID @: @course.Course.Title  <br />
+                        @course.Course.CourseID @:  @course.Course.Title <br />
                     }
                 }
             </td>
@@ -80,7 +80,7 @@
 
 @if (Model.Instructor.Courses != null)
 {
-    <h3>Courses Taught By Selected Instructor</h3>
+    <h3>Courses Taught by Selected Instructor</h3>
     <table class="table">
         <tr>
             <th></th>
@@ -99,7 +99,7 @@
             <tr class="@selectedRow">
                 <td>
                     @Html.ActionLink("Select", "OnGetAsync",
-                        new { courseID = item.CourseID })
+                                            new { courseID = item.CourseID })
                 </td>
                 <td>
                     @item.CourseID
@@ -112,5 +112,31 @@
                 </td>
             </tr>
         }
-    </table>  
+
+    </table>
+
+
+    @if (Model.Instructor.Enrollments != null)
+    {
+        <h3>
+            Students Enrolled in Selected Course
+        </h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+            </tr>
+            @foreach (var item in Model.Instructor.Enrollments)
+            {
+                <tr>
+                    <td>
+                        @item.Student.FullName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Grade)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
 }

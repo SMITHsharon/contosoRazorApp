@@ -31,7 +31,7 @@ namespace ContosoUniversity.Pages.Instructors
             }
         }
 
-        public voic UpdateInstructorCourses(SchoolContext context,
+        public void UpdateInstructorCourses(SchoolContext context,
                                             string[] selectedCourses, 
                                             Instructor instructorToUpdate)
         {

@@ -29,7 +29,8 @@ namespace ContosoUniversity.Pages.Instructors
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors.SingleOrDefaultAsync(m => m.ID == id);
+            //Instructor = await _context.Instructors.SingleOrDefaultAsync(m => m.ID == id);
+            Instructor = await _context.Instructors.SingleAsync(m => m.ID == id);
 
             if (Instructor == null)
             {
@@ -40,19 +41,35 @@ namespace ContosoUniversity.Pages.Instructors
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            /*
             if (id == null)
             {
                 return NotFound();
             }
+            */
 
-            Instructor = await _context.Instructors.FindAsync(id);
+            //Instructor = await _context.Instructors.FindAsync(id);
 
+            Instructor instructor = await _context.Instructors
+                .Include(i => i.CourseAssignments)
+                .SingleAsync(i => i.ID == id);
+
+            var departments = await _context.Departments
+                .Where(d => d.InstructorID == id)
+                .ToListAsync();
+            departments.ForEach(d => d.InstructorID = null);
+
+            /*
             if (Instructor != null)
             {
                 _context.Instructors.Remove(Instructor);
                 await _context.SaveChangesAsync();
             }
+            */
 
+            _context.Instructors.Remove(instructor);
+
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
     }
